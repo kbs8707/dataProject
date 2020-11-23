@@ -18,13 +18,17 @@ connection.connect(function(err){
 
 // connection.end()
 
-function getAccount() {
-  connection.query("", function (err, rows, fields) {
+function getAccount(data, callback) {
+  let sql = "SELECT * FROM account";
+  connection.query(sql, function (err, res) {
     if (err) throw err;
-    return rows;
+    // console.log(res[0]); 
+    return callback(res);
   });
 
 }
 
 
-module.exports = connection;
+module.exports = {
+  getAccount
+};
