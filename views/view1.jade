@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    div
+        table.zui-table
+            thead
+                each i in Object.keys(data[0])
+                    th=i
+            tbody
+                each i in data
+                    tr
+                        each j in i
+                            td=j

@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div
+    form(id="form" action="/handle", method="post")
+      select(name="view" id="view")
+        option(value="/view1") View 1
+        option(value="/view2") View 2
+        option(value="/view3") View 3
+        option(value="/view4") View 4
+        option(value="/view5") View 5
+        option(value="/view6") View 6
+        option(value="/view7") View 7
+        option(value="/view8") View 8
+        option(value="/view9") View 9
+        option(value="/view10") View 10
+      input(type="submit", value="Submit")

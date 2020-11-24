@@ -33,9 +33,9 @@ function view1(callback) {
 }
 
 //View 2: Uses nested queries with the ANY or ALL operator and uses a GROUP BY clause
-//Count the number of books that any author wrote that cost more than $500.
+//Count the number of books that any author wrote that cost more than $15.
 function view2(data, callback) {
-  if (!data) data = 500;
+  if (!data) data = 15;
   let sql = `SELECT count(*) FROM book WHERE bookID = ANY(SELECT bookID FROM product WHERE price > ${data})`;
   connection.query(sql, function (err, res) {
     if (err) throw err;
@@ -112,7 +112,7 @@ function view8(data, callback) {
 
 //View 9: Use ORDER BY to retrieve a list of authors that are in the store
 function view9(callback) {
-  let sql = "SELECT * FROM book ORDER BY author";
+  let sql = "SELECT DISTINCT book.author FROM book ORDER BY author";
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -132,6 +132,7 @@ function view10(callback) {
 
 //Book API
 function bookAPI(data, callback) {
+  if (!data) data = 0;
   let sql = `SELECT * FROM book WHERE bookID = ${data}`;
   connection.query(sql, function (err, res) {
     if (err) throw err;
