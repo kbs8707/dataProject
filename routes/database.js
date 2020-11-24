@@ -3,20 +3,13 @@ var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'project'
+  database: 'project',
+  multipleStatements: true
 });
 
 connection.connect(function(err){
   if (err) throw err;
 });
-
-// connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
-//   if (err) throw err
-
-//   console.log('The solution is: ', rows[0].solution)
-// })
-
-// connection.end()
 
 function getAccount(data, callback) {
   let sql = "SELECT * FROM account";
@@ -137,7 +130,7 @@ function view10(callback) {
   });
 }
 
-//book API
+//Book API
 function bookAPI(data, callback) {
   let sql = `SELECT * FROM book WHERE bookID = ${data}`;
   connection.query(sql, function (err, res) {
@@ -146,6 +139,76 @@ function bookAPI(data, callback) {
     return callback(res);
   });
 }
+
+//Insert Account
+//Return 1 if success, -1 otherwise
+function addAccount(data, callback) {
+  let sql = `INSERT INTO account VALUES (${data.accountID}, '${data.firstName}', '${data.lastName}', ${data.contactNum}, '${data.email}', '${data.password}', ${ccNum}, '${username}')`;
+  connection.query(sql, function (err, res) {
+    if (err) {
+      return callback(-1);
+    }
+    console.log(res); 
+    return callback(1);
+  });
+}
+
+//Update Account
+//Return 1 if success, -1 otherwise
+//Updates email given accountID
+function updateAccount(data, callback) {
+  let sql = `UPDATE account SET email = '${data.email}' WHERE accountID = ${data.accountID}`;
+  connection.query(sql, function (err, res) {
+    if (err) {
+      return callback(-1);
+    }
+    console.log(res); 
+    return callback(1);
+  });
+}
+
+//Remove Account
+function removeAccount(data, callback) {
+  let sql = `DELETE FROM account WHERE accountID = ${data}`;
+  connection.query(sql, function (err, res) {
+    if (err) throw err;
+    console.log(res); 
+    return callback(res);
+  });
+}
+
+//View Account
+function viewAccount(callback) {
+  let sql = `SELECT accountID, firstName, lastName, contactNum, email, ccNum, username FROM account`;
+  connection.query(sql, function (err, res) {
+    if (err) throw err;
+    console.log(res); 
+    return callback(res);
+  });
+}
+
+//View SellerInfo
+function viewSeller(callback) {
+  let sql = `SELECT * FROM sellerinfo`;
+  connection.query(sql, function (err, res) {
+    if (err) throw err;
+    console.log(res); 
+    return callback(res);
+  });
+}
+
+//Insert SellerInfo
+function insertSeller(data, callback) {
+  let sql = `INSERT INTO sellerinfo VALUES (${data.sellerID}, '${data.sellerName}', ${data.verified}, ${data.accountID})`;
+  connection.query(sql, function (err, res) {
+    if (err) {
+      return callback(-1);
+    }
+    console.log(res); 
+    return callback(1);
+  });
+}
+
 module.exports = {
   getAccount,
   view1,
@@ -158,5 +221,11 @@ module.exports = {
   view8,  
   view9,
   view10,
-  bookAPI
+  bookAPI,
+  addAccount,
+  updateAccount,
+  removeAccount,
+  viewAccount,
+  viewSeller,
+  insertSeller
 };
