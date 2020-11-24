@@ -36,7 +36,7 @@ function view1(callback) {
 //Count the number of books that any author wrote that cost more than $500.
 function view2(data, callback) {
   if (!data) data = 500;
-  let sql = "SELECT count(*) FROM book WHERE bookID = ANY(SELECT bookID FROM product WHERE price > " + data;
+  let sql = `SELECT count(*) FROM book WHERE bookID = ANY(SELECT bookID FROM product WHERE price > ${data})`;
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -48,7 +48,7 @@ function view2(data, callback) {
 //To find and display each time a seller has a review score of 8 or above.
 function view3(data, callback) {
   if (!data) data = 8;
-  let sql = `SELECT sellerinfo.sellerName, review.description FROM review, sellerinfo WHERE review.score =(SELECT review.score FROM review WHERE review.score > ${data})`;
+  let sql = `SELECT sellerinfo.sellerName, review.description, review.score FROM review, sellerinfo GROUP BY review.reviewID HAVING review.score > ${data} ORDER BY (review.score) DESC;`;
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -59,7 +59,7 @@ function view3(data, callback) {
 //View 4: Uses a FULL JOIN
 //Select all seller email addresses
 function view4(callback) {
-  let sql = "SELECT a.email FROM account a FULL JOIN sellerinfo s ON a.accountID = s.accountID";
+  let sql = "SELECT a.email FROM account a JOIN sellerinfo s ON a.accountID = s.accountID";
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -70,7 +70,7 @@ function view4(callback) {
 //View 5: Uses nested queries with any of the set operations UNION, EXCEPT, or INTERSECT
 //Find all the sellers, except for ones with a review
 function view5(callback) {
-  let sql = "SELECT sellerName FROM sellerinfo EXCEPT (SELECT sellerName FROM review)";
+  let sql = "SELECT sellerName FROM sellerinfo WHERE sellerID NOT IN (SELECT sellerID FROM review)";
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -80,7 +80,7 @@ function view5(callback) {
 
 //View 6: Use count to find the number of unique books being sold
 function view6(callback) {
-  let sql = "SELECT count(*) FROM (SELECT DISTINCT bookID FROM product)";
+  let sql = "SELECT COUNT(DISTINCT bookID) FROM product";
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -91,7 +91,7 @@ function view6(callback) {
 //View 7: Use ANY to find books that cost less than 20 and in new condition
 function view7(data, callback) {
   if (!data) data = 20;
-  let sql = `SELECT title, author FROM book WHERE bookID = ANY (SELECT bookID FROM product WHERE (price < ${data}) AND condition = "New")`;
+  let sql = `SELECT title, author FROM book WHERE bookID = ANY (SELECT bookID FROM product WHERE price < ${data} AND product.condition = "NEW") `;
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
@@ -102,7 +102,7 @@ function view7(data, callback) {
 //View 8: Use Max to find the highest costing product from a specific Author
 function view8(data, callback) {
   if (!data) data = "J. K. Rowling";
-  let sql = `SELECT MAX(product.price) FROM product, book WHERE book.bookID = product.bookID AND book.author = '${data}'`;
+  let sql = `SELECT MAX(product.price) FROM product, book WHERE book.bookID = product.bookID AND book.author LIKE '${data}'`;
   connection.query(sql, function (err, res) {
     if (err) throw err;
     console.log(res); 
