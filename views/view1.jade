@@ -1,13 +1,72 @@
-extends layout
-
-block content
-    div
-        table.zui-table
-            thead
-                each i in Object.keys(data[0])
-                    th=i
-            tbody
-                each i in data
-                    tr
-                        each j in i
-                            td=j
+html
+  title Project Index
+  meta(charset='utf-8')
+  link(rel='stylesheet', href="/stylesheets/style.css")
+  body
+    header#header
+      p(style='text-align:center')
+        center
+          font(color='#00FFFF')
+            h1 Book Marketplace
+    |   
+    #container
+      main#center.column
+        article
+          p
+            br
+          h2
+          p
+            div
+                table.zui-table
+                    thead
+                        each i in Object.keys(data[0])
+                            th=i
+                    tbody
+                        each i in data
+                            tr
+                                each j in i
+                                    td=j
+          |                
+          p
+            br
+            center
+      |     
+      nav#left.column
+        center
+          a(href='http://localhost:3000/')
+            img(src='http://luispintodecor.com/wp-content/uploads/2015/08/morada.png', style='width:80px;height:80px;', ,='', title='Go to Homepage')
+        br
+        center
+          .dropdown
+            a(href='http://localhost:3000/')
+              button.dropbtn Log-in
+          p
+          p
+          .dropdown
+            a(href='http://localhost:3000/')
+              button.dropbtn Search 
+          |   
+          p
+          p
+          .dropdown
+            a(href='http://localhost:3000/')
+              button.dropbtn Buy Now  
+          p
+          p
+          .dropdown
+            a(href='http://localhost:3000/')
+              button.dropbtn Sell Now  
+          |   
+          p
+          p
+          .dropdown
+            a(href='http://localhost:3000/')
+              button.dropbtn Settings   
+        br
+        br
+        br
+        p
+          br
+          br
+      nav#right.column
+        p
