@@ -19,6 +19,7 @@ router.post('/handle', function(req, res, next) {
   else if (route == '/view8') res.redirect('http://localhost:3000/view8');
   else if (route == '/view9') res.redirect('http://localhost:3000/view9');
   else if (route == '/view10') res.redirect('http://localhost:3000/view10');
+  else if (route == '/book') res.redirect('http://localhost:3000/book');
 });
 
 router.get('/view1', view1);
@@ -43,6 +44,10 @@ router.get('/bookapi', function(req, res, next) {
       res.render('bookapi', { data: result });
     });
   }
+});
+
+router.get('/apiget.html', function(req, res, next) {
+  res.render('apiget');
 });
 
 router.get('/api', function(req, res, next) {

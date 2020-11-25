@@ -223,7 +223,7 @@ function viewBook(callback) {
 //Insert book
 function insertBook(data, callback) {
   if (!data) return callback(-1);
-  let sql = `INSERT INTO book(bookID, title, author, pages) VALUES ${data.bookid}, '${data.title}', '${data.author}', ${data.pages}`;
+  let sql = `INSERT INTO book (bookID, title, author) VALUES (${data.id}, '${data.title}', '${data.author}')`;
   connection.query(sql, function (err, res) {
     if (err) {
       return callback(-1);
