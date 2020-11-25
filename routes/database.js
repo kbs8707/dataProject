@@ -210,6 +210,29 @@ function insertSeller(data, callback) {
   });
 }
 
+//View Book
+function viewBook(callback) {
+  let sql = `SELECT * FROM book`;
+  connection.query(sql, function (err, res) {
+    if (err) throw err;
+    console.log(res); 
+    return callback(res);
+  });
+}
+
+//Insert book
+function insertBook(data, callback) {
+  if (!data) return callback(-1);
+  let sql = `INSERT INTO book(bookID, title, author, pages) VALUES ${data.bookid}, '${data.title}', '${data.author}', ${data.pages}`;
+  connection.query(sql, function (err, res) {
+    if (err) {
+      return callback(-1);
+    }
+    console.log(res); 
+    return callback(1);
+  });
+}
+
 module.exports = {
   getAccount,
   view1,
@@ -228,5 +251,7 @@ module.exports = {
   removeAccount,
   viewAccount,
   viewSeller,
-  insertSeller
+  insertSeller,
+  insertBook,
+  viewBook
 };

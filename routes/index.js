@@ -31,6 +31,7 @@ router.get('/view7', view7);
 router.get('/view8', view8);
 router.get('/view9', view9);
 router.get('/view10', view10);
+router.get('/book', viewBook);
 
 router.get('/bookapi', function(req, res, next) {
   let data = req.query.id;
@@ -43,6 +44,24 @@ router.get('/bookapi', function(req, res, next) {
     });
   }
 });
+
+router.get('/api', function(req, res, next) {
+  let data = req.query;
+  db.insertBook(data, function(result){
+    console.log(result);
+    // if (result == 1) {
+    //   // res.sendFile('apiget.html');
+    //   // router.get('/book', viewBook);
+    // }
+  });
+});
+
+function viewBook(req, res, next) {
+  db.viewBook(function(result){
+    console.log(result);
+    res.render('view1', {data: result});
+  });
+}
 
 function view1(req, res, next) {
   db.view1(function(result){
